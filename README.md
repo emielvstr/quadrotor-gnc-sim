@@ -5,7 +5,7 @@
 ![Control](https://img.shields.io/badge/Control-NMPC%20%7C%20Cascaded-brightgreen)
 ![Filter](https://img.shields.io/badge/State%20Estimation-ESKF-purple)
 
-A high-fidelity, from-scratch 3D Quadrotor simulator built in Python. This project serves as a comprehensive playground for testing advanced Guidance, Navigation, and Control algorithms, heavily relying on rigid-body physics, quaternion math, and mathematical optimization.
+A high-fidelity, from-scratch 3D Quadrotor simulator built in Python. This project serves as a personal playground for testing advanced Guidance, Navigation, and Control algorithms, heavily relying on rigid-body physics, quaternion math, and mathematical optimization.
 
 ![Quadrotor Simulation](Results/3d_vlucht.gif)
 
