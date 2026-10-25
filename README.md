@@ -32,8 +32,8 @@ A modular computational simulation and control framework for an autonomous quadr
 - [x] **Phase 2:** 3D minimum-snap trajectory generation
 - [x] **Phase 3:** Cascaded baseline geometric controller
 - [x] **Phase 4:** Nonlinear Model Predictive Control (NMPC) with CasADi
-- [ ] **Phase 5:** Sensor modeling and Error-State Kalman Filter (ESKF)
-- [ ] **Phase 6:** 3D visualization, benchmarking, and telemetry logging
+- [x] **Phase 5:** Sensor modeling and Error-State Kalman Filter (ESKF)
+- [x] **Phase 6:** 3D visualization, benchmarking, and telemetry logging
 
 ---
 
