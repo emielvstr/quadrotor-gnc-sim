@@ -32,3 +32,4 @@ The simulator is built in a highly modular fashion:
 | `sensors.py` | Generates Gaussian noise for virtual IMU and GPS sensors. |
 | `eskf.py` | The Error-State Kalman Filter for robust state estimation. |
 | `visualize.py` | 3D animation and GIF export engine. |
+
