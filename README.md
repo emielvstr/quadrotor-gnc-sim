@@ -1,50 +1,34 @@
-# 3D Quadrotor Guidance, Navigation & Control (GNC) Simulation
+# 3D Quadrotor Guidance, Navigation & Control (GNC) Simulator
 
-[![Status: In Development](https://img.shields.io/badge/status-in_development-orange.svg)](#roadmap)
-[![Python: 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
+![CasADi](https://img.shields.io/badge/Optimization-CasADi-orange)
+![Control](https://img.shields.io/badge/Control-NMPC%20%7C%20Cascaded-brightgreen)
+![Filter](https://img.shields.io/badge/State%20Estimation-ESKF-purple)
 
-A modular computational simulation and control framework for an autonomous quadrotor UAV developed in Python. This repository implements a full Guidance, Navigation, and Control (GNC) stack, incorporating 6-DOF rigid-body dynamics, sensor fusion, and real-time trajectory optimization.
+A high-fidelity, from-scratch 3D Quadrotor simulator built in Python. This project serves as a comprehensive playground for testing advanced Guidance, Navigation, and Control algorithms, heavily relying on rigid-body physics, quaternion math, and mathematical optimization.
 
----
+![Quadrotor Simulation](Results/3d_vlucht.gif)
 
-> **Project Status:**  
-> This project has **just started** and is currently under active development. Core equations of motion, physical parameters, and numerical integrators are being implemented as part of Phase 1.
+## Key Features
 
----
+*   **Rigid-Body Dynamics:** 6-DOF Newton-Euler equations of motion using **Hamilton Quaternions** to prevent Gimbal Lock, integrated via an RK4 (Runge-Kutta 4th order) solver.
+*   **Sensor Fusion (ESKF):** An Error-State Kalman Filter combining noisy, high-frequency IMU data with low-frequency GPS data to accurately estimate the true state, utilizing local SO(3) error mapping.
+*   **Model Predictive Control (NMPC):** A Non-Linear MPC implementation using the **CasADi** framework and IPOPT solver, allowing for real-time optimal trajectory tracking while respecting actuator limits.
+*   **Cascaded Baseline Controller:** A robust classic cascaded architecture (Outer Loop: Position to Thrust/Attitude, Inner Loop: Attitude to Motor Torques).
+*   **Differential Flatness Trajectories:** Quintic polynomial trajectory generation ensuring continuous position, velocity, and acceleration profiles.
+*   **3D Telemetry Visualization:** A custom Matplotlib Dark-Mode rendering engine including simulated propeller discs, ground shadow projection, and a live HUD.
 
-## Architecture Overview
+## Project Architecture
 
-* **6-DOF Dynamics Engine:** Rigid-body Newton-Euler dynamics using unit quaternions (Hamilton convention, scalar-first) to eliminate gimbal lock. Numerical integration via 4th-order Runge-Kutta (RK4).
-* **Navigation (State Estimation):** Synthetic sensor generation (IMU with bias/drift, GPS, Barometer) fused via an Error-State Kalman Filter (ESKF).
-* **Guidance & Trajectory Generation:** Minimum-snap 3D trajectory generation across waypoints.
-* **Control:** 
-  * Baseline cascaded geometric attitude and position control.
-  * Nonlinear Model Predictive Control (NMPC) formulated in CasADi with IPOPT for trajectory tracking and obstacle avoidance.
-* **Disturbances:** Aerodynamic drag and wind gust modeling.
+The simulator is built in a highly modular fashion:
 
----
-
-## Roadmap
-
-- [x] Repository setup and initial configuration
-- [x] **Phase 1:** 6-DOF physical dynamics, quaternion kinematics, and RK4 verification
-- [x] **Phase 2:** 3D minimum-snap trajectory generation
-- [x] **Phase 3:** Cascaded baseline geometric controller
-- [x] **Phase 4:** Nonlinear Model Predictive Control (NMPC) with CasADi
-- [ ] **Phase 5:** Sensor modeling and Error-State Kalman Filter (ESKF)
-- [ ] **Phase 6:** 3D visualization, benchmarking, and telemetry logging
-
----
-
-## Intermediary Results
-
-### Nonlinear Model Predictive Control (NMPC) Point-to-Point Flight
-
-<p align="center">
-  <img src="Results/fase4.png" alt="NMPC 3D Trajectcontrole" width="750"/>
-</p>
-
-- **Scenario:** Autonome 3D point-to-point vlucht van de startpositie $[0, 0, 0]$ naar het doelpunt $[2, 3, 5]\,\text{m}$.
-- **Controller:** NMPC geformuleerd in CasADi met de IPOPT solver, rekening houdend met 6-DOF rotatie- en translatiedynamica.
-- **Observatie:** De quadrotor convergeert stabiel naar het setpoint met een gecontroleerde nadering en minimale overshoot op hoogte ($Z$).
+| Module | Description |
+| :--- | :--- |
+| `config.py` | Physical drone parameters (mass, inertia matrix $J$, aerodynamic coefficients). |
+| `drone_dynamics.py` | The physics engine. Converts motor speeds to forces/torques and updates the 13-variable state vector. |
+| `trajectory.py` | Generates smooth references ($x, y, z, \psi$) using Quintic Polynomials. |
+| `controller.py` | The Cascaded PID Controller (Geometric tracking). |
+| `mpc_controller.py` | The Non-Linear Model Predictive Controller using CasADi. |
+| `sensors.py` | Generates Gaussian noise for virtual IMU and GPS sensors. |
+| `eskf.py` | The Error-State Kalman Filter for robust state estimation. |
+| `visualize.py` | 3D animation and GIF export engine. |
